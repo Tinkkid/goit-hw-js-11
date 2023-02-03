@@ -23,6 +23,7 @@ function onSearchClick(e) {
   if (!pixabayApi.query) {
     return Notiflix.Notify.info('Please, enter your request');
   }
+
   pixabayApi.resetPage();
   pixabayApi
     .fetchGallery()
