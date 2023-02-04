@@ -10,8 +10,7 @@ export default function createMarkupGallery(hits) {
         comments,
         downloads,
       } = hit;
-      return `<div class="photo-card">
-  <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+      return `<div class="photo-card"><a href="${largeImageURL}"><img src="${webformatURL}" alt="${tags}" loading="lazy"/>
   <div class="info">
     <p class="info-item">
       <b>Likes </b>${likes}
@@ -26,7 +25,7 @@ export default function createMarkupGallery(hits) {
       <b>Downloads </b>${downloads}
     </p>
   </div>
-</div>`;
+</div></a>`;
     })
     .join('');
 }
