@@ -81,7 +81,7 @@ const searchApi = await pixabayApi.fetchGallery();
   const resultApi = await searchApi.data.hits;
   const renderMoreImages = await appendGalleryMarkup(resultApi);
     lightbox.refresh();
-    pixabayApi.incrementPage();
+    // pixabayApi.incrementPage();
   smoothScroll();
   const totalPages = Math.ceil(searchApi.data.totalHits / pixabayApi.per_page);
     if (pixabayApi.page > totalPages) {
