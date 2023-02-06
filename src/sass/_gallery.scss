@@ -34,6 +34,7 @@ margin-top: 70px;
 .photo-card:hover,
 .photo-card:focus {
 transform: scale(1.03);
+z-index: 1;
 }
 
  img {
@@ -60,6 +61,7 @@ transform: scale(1.03);
 //  Added style for searching form
 .search-form {
   position: fixed;
+  z-index: 100;
   top: -1px;
   width: 100%;
    background: #f7971e;

@@ -75,7 +75,6 @@ async function onSearchClick(e) {
   //       Notiflix.Notify.failure('Oops, there is no country with that name');
   //   });
 
-
 async function onLoadMoreClick() {
 const searchApi = await pixabayApi.fetchGallery();
   const resultApi = await searchApi.data.hits;
@@ -90,7 +89,7 @@ const searchApi = await pixabayApi.fetchGallery();
     );
   }
 
-    return renderMoreImages;
+    // return renderMoreImages;
   }
 
   // if (
