@@ -25,7 +25,11 @@ refs.loadMoreBtn.addEventListener('click', onLoadMoreClick);
 refs.loadMoreBtn.classList.add('disabled');
 
 async function onSearchClick(event) {
-  event.preventDefault();
+  if (event && event.preventDefault) {
+    event.preventDefault();
+  }
+
+  // event.preventDefault();
   clearGallery();
 
   pixabayApi.query = event.currentTarget.elements.searchQuery.value.trim();
