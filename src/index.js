@@ -2,23 +2,16 @@ import PixabayApi from './js/pixabay-api';
 import createMarkupGallery from './js/gallery-markup';
 import Notiflix from 'notiflix';
 import 'notiflix/dist/notiflix-3.2.6.min.css';
+import throttle from 'lodash.throttle';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import InfiniteScroll from 'infinite-scroll';
+
 
 let lightbox = new SimpleLightbox('.photo-card a', {
   captionsData: 'alt',
   captionDelay: 250,
   scrollZoom: false,
 });
-
-// let infScroll = new InfiniteScroll(elem, {
-//   // options
-//   // path: '.pagination__next',
-//   // append: '.post',
-//   // history: false,
-// });
-
 
 const refs = {
   searchForm: document.getElementById('search-form'),
@@ -29,7 +22,7 @@ const pixabayApi = new PixabayApi();
 
 refs.searchForm.addEventListener('submit', onSearchClick);
 refs.loadMoreBtn.addEventListener('click', onLoadMoreClick);
-refs.loadMoreBtn.disabled= true;
+refs.loadMoreBtn.classList.add('disabled');
 
 async function onSearchClick(e) {
   e.preventDefault();
@@ -46,6 +39,7 @@ async function onSearchClick(e) {
   try {
     const searchApi = await pixabayApi.fetchGallery();
     const resultApi = await searchApi.data.hits;
+    currentHits = resultApi.length;
     if (resultApi.length === 0) {
       return Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
@@ -83,27 +77,32 @@ async function onSearchClick(e) {
 
 
 async function onLoadMoreClick() {
-  const searchApi = await pixabayApi.fetchGallery();
+const searchApi = await pixabayApi.fetchGallery();
   const resultApi = await searchApi.data.hits;
   const renderMoreImages = await appendGalleryMarkup(resultApi);
-  lightbox.refresh();
+    lightbox.refresh();
+    pixabayApi.incrementPage();
   smoothScroll();
-  // infScroll();
-
- 
-  if (
-    Math.round(searchApi.data.totalHits / pixabayApi.per_page) ===
-    pixabayApi.page
-  ) {
-    
-     Notiflix.Notify.info(
+  const totalPages = Math.ceil(searchApi.data.totalHits / pixabayApi.per_page);
+    if (pixabayApi.page > totalPages) {
+    Notiflix.Notify.info(
       "We're sorry, but you've reached the end of search results."
-     );
-    refs.loadMoreBtn.disabled = true;
+    );
   }
-  //  appendGalleryMarkup(resultApi);
-  return renderMoreImages;
-}
+
+    return renderMoreImages;
+  }
+
+  // if (
+  //   Math.round(searchApi.data.totalHits / pixabayApi.per_page) ===
+  //   pixabayApi.page
+  // ) {
+    
+  //    Notiflix.Notify.info(
+  //     "We're sorry, but you've reached the end of search results."
+  //    );
+  //   refs.loadMoreBtn.disabled = true;
+  // }
 
   // *fetch/then functions
 
@@ -132,3 +131,24 @@ function smoothScroll() {
     behavior: 'smooth',
   });
 }
+
+async function checkPosition() {
+  const height = document.body.offsetHeight;
+  const screenHeight = window.innerHeight;
+
+  // number of pixels and how many scrolls
+  const scrolled = window.scrollY;
+  const threshold = height - screenHeight / 4;
+
+  //We track where the bottom of the screen is relative to the page:
+  const position = scrolled + screenHeight;
+
+  if (position >= threshold) {
+    await onLoadMoreClick();
+  }
+}
+
+;(() => {
+  window.addEventListener('scroll', throttle((checkPosition), 250));
+  window.addEventListener('resize', throttle((checkPosition),250));
+})()

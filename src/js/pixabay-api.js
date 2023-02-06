@@ -5,7 +5,6 @@ export default class PixabayApi {
   BASE_URL = 'https://pixabay.com/api/';
  
 
-
   constructor() {
     this.searchQuery = '';
     this.page = 1;
@@ -21,7 +20,7 @@ export default class PixabayApi {
       `${this.BASE_URL}?key=${this.#API_KEY}&q=${options}`
     );
     }
-    
+  
     // return axios.get(url,options)
     //   .then(r => r.json())
     //   .then(data => {
