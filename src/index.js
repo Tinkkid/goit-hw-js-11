@@ -28,7 +28,7 @@ async function onSearchClick(event) {
   event.preventDefault();
   clearGallery();
 
-  pixabayApi.query = e.currentTarget.elements.searchQuery.value.trim();
+  pixabayApi.query = event.currentTarget.elements.searchQuery.value.trim();
   if (!pixabayApi.query) {
     refs.loadMoreBtn.disabled = true;
     return Notiflix.Notify.info('Please, enter your request');
