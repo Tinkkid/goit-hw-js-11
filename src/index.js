@@ -25,11 +25,7 @@ refs.loadMoreBtn.addEventListener('click', onLoadMoreClick);
 refs.loadMoreBtn.classList.add('disabled');
 
 async function onSearchClick(event) {
-  if (event && event.preventDefault) {
     event.preventDefault();
-  }
-
-  // event.preventDefault();
   clearGallery();
 
   pixabayApi.query = event.currentTarget.elements.searchQuery.value.trim();
@@ -43,7 +39,6 @@ async function onSearchClick(event) {
   try {
     const searchApi = await pixabayApi.fetchGallery();
     const resultApi = await searchApi.data.hits;
-    currentHits = resultApi.length;
     if (resultApi.length === 0) {
       return Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
@@ -89,7 +84,8 @@ const searchApi = await pixabayApi.fetchGallery();
     Notiflix.Notify.info(
       "We're sorry, but you've reached the end of search results."
     );
-  }
+    }
+  return renderMoreImages;
   }
 
   // if (
@@ -134,7 +130,7 @@ async function checkPosition() {
   if (position >= threshold) {
     await onLoadMoreClick();
   }
-  onSearchClick();
+
 }
 
 ;(() => {
