@@ -82,7 +82,7 @@ const searchApi = await pixabayApi.fetchGallery();
   const renderMoreImages = await appendGalleryMarkup(resultApi);
     lightbox.refresh();
     // pixabayApi.incrementPage();
-  smoothScroll();
+  // smoothScroll();
   const totalPages = Math.ceil(searchApi.data.totalHits / pixabayApi.per_page);
     if (pixabayApi.page > totalPages) {
     Notiflix.Notify.info(
@@ -121,16 +121,16 @@ function clearGallery() {
   refs.wrapOfGallery.innerHTML = '';
 }
 
-function smoothScroll() {
-  const { height: cardHeight } = document
-    .querySelector('.gallery')
-    .firstElementChild.getBoundingClientRect();
+// function smoothScroll() {
+//   const { height: cardHeight } = document
+//     .querySelector('.gallery')
+//     .firstElementChild.getBoundingClientRect();
 
-  window.scrollBy({
-    top: cardHeight * 2,
-    behavior: 'smooth',
-  });
-}
+//   window.scrollBy({
+//     top: cardHeight * 2,
+//     behavior: 'smooth',
+//   });
+// }
 
 async function checkPosition() {
   const height = document.body.offsetHeight;
