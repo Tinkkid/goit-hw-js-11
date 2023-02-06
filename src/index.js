@@ -80,16 +80,12 @@ const searchApi = await pixabayApi.fetchGallery();
   const resultApi = await searchApi.data.hits;
   const renderMoreImages = await appendGalleryMarkup(resultApi);
     lightbox.refresh();
-    // pixabayApi.incrementPage();
-  // smoothScroll();
   const totalPages = Math.ceil(searchApi.data.totalHits / pixabayApi.per_page);
     if (pixabayApi.page > totalPages) {
     Notiflix.Notify.info(
       "We're sorry, but you've reached the end of search results."
     );
   }
-
-    // return renderMoreImages;
   }
 
   // if (
@@ -120,17 +116,6 @@ function clearGallery() {
   refs.wrapOfGallery.innerHTML = '';
 }
 
-// function smoothScroll() {
-//   const { height: cardHeight } = document
-//     .querySelector('.gallery')
-//     .firstElementChild.getBoundingClientRect();
-
-//   window.scrollBy({
-//     top: cardHeight * 2,
-//     behavior: 'smooth',
-//   });
-// }
-
 async function checkPosition() {
   const height = document.body.offsetHeight;
   const screenHeight = window.innerHeight;
@@ -145,6 +130,7 @@ async function checkPosition() {
   if (position >= threshold) {
     await onLoadMoreClick();
   }
+  onSearchClick();
 }
 
 ;(() => {
